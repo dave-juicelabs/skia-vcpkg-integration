@@ -33,7 +33,7 @@ jobs:
       - uses: actions/checkout@v2
 
       - name: Building skia[${{ matrix.features }}]
-        shell: powershell
+        shell: pwsh
         run: |
-          pwsh ./vcpkg.ps1 -Repository ${{ github.event.inputs.repository }} -Branch ${{ github.event.inputs.branch }}
+          ./vcpkg.ps1 -Repository ${{ github.event.inputs.repository }} -Branch ${{ github.event.inputs.branch }}
           ./vcpkg/vcpkg install skia[${{ matrix.features }}] --triplet ${{ matrix.triplet }}
