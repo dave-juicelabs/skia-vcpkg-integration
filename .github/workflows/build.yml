@@ -22,12 +22,12 @@ jobs:
             os: windows-latest
           - features: metal
             os: macos-latest
-          - triplet: x64-windows
-            os: windows-latest
-          - triplet: x64-linux
-            os: ubuntu-latest
-          - triplet: x64-osx
-            os: macos-latest
+          - os: windows-latest
+            triplet: x64-windows
+          - os: ubuntu-latest
+            triplet: x64-linux
+          - os: macos-latest
+            triplet: x64-osx
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v2
