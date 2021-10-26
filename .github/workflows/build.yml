@@ -21,7 +21,7 @@ jobs:
           - features: direct3d
             os: windows-latest
           - features: metal
-            os: ubuntu-latest
+            os: macos-latest
           - triplet: x64-windows
             os: windows-latest
           - triplet: x64-linux
@@ -35,5 +35,5 @@ jobs:
       - name: Building skia[${{ matrix.features }}]
         shell: powershell
         run: |
-          ./vcpkg.ps1 -Repository ${{ github.event.inputs.repository }} -Branch ${{ github.event.inputs.branch }}
+          pwsh ./vcpkg.ps1 -Repository ${{ github.event.inputs.repository }} -Branch ${{ github.event.inputs.branch }}
           ./vcpkg/vcpkg install skia[${{ matrix.features }}] --triplet ${{ matrix.triplet }}
