@@ -20,8 +20,10 @@ jobs:
         include:
           - os: windows-latest
             features: direct3d
+            triplet: x64-windows
           - os: macos-latest
             features: metal
+            triplet: x64-osx
           - os: windows-latest
             triplet: x64-windows
           - os: ubuntu-latest
