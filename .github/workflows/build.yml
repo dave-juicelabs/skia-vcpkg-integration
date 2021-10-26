@@ -18,10 +18,10 @@ jobs:
         os: [macos-latest, ubuntu-latest, windows-latest]
         features: [gl, dawn, vulkan]
         include:
-          - features: direct3d
-            os: windows-latest
-          - features: metal
-            os: macos-latest
+          - os: windows-latest
+            features: direct3d
+          - os: macos-latest
+            features: metal
           - os: windows-latest
             triplet: x64-windows
           - os: ubuntu-latest
