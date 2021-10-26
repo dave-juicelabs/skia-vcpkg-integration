@@ -1,0 +1,39 @@
+name: Build
+
+on:
+  workflow_dispatch:
+    inputs:
+      repository:
+        description: The vcpkg repository to pull
+        required: true
+        default: https://github.com/microsoft/vcpkg.git
+      branch:
+        description: The vcpkg repository branch to pull
+        required: true
+        default: master
+jobs:
+  build:
+    strategy:
+      matrix:
+        os: [macos-latest, ubuntu-latest, windows-latest]
+        features: [gl, dawn, vulkan]
+        include:
+          - features: direct3d
+            os: windows-latest
+          - features: metal
+            os: ubuntu-latest
+          - triplet: x64-windows
+            os: windows-latest
+          - triplet: x64-linux
+            os: ubuntu-latest
+          - triplet: x64-osx
+            os: macos-latest
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Building skia[${{ matrix.features }}]
+        shell: powershell
+        run: |
+          ./vcpkg.ps1 -Repository ${{ github.event.inputs.repository }} -Branch ${{ github.event.inputs.branch }}
+          ./vcpkg/vcpkg install skia[${{ matrix.features }}] --triplet ${{ matrix.triplet }}
