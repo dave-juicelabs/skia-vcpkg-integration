@@ -51,5 +51,5 @@ jobs:
         if: ${{ failure() }}
         uses: actions/upload-artifact@v2
         with:
-          name: logs
+          name: logs-${{ matrix.os }}-${{ matrix.features }}
           path: vcpkg/buildtrees/skia/*.log
