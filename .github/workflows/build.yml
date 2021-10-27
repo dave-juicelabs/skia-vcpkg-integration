@@ -34,8 +34,10 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: Building skia[${{ matrix.features }}]
+      - name: Pulling ${{ github.event.inputs.repository }}
         shell: pwsh
-        run: |
-          ./vcpkg.ps1 -Repository ${{ github.event.inputs.repository }} -Branch ${{ github.event.inputs.branch }}
-          ./vcpkg/vcpkg install skia[${{ matrix.features }}] --triplet ${{ matrix.triplet }}
+        run: ./vcpkg.ps1 -Repository ${{ github.event.inputs.repository }} -Branch ${{ github.event.inputs.branch }}
+
+      - name: Installing skia[${{ matrix.features }}]
+        shell: bash
+        run: ./vcpkg/vcpkg install skia[${{ matrix.features }}] --triplet ${{ matrix.triplet }}
