@@ -34,6 +34,11 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
+      - name: Installing mesa-common-dev
+        if: ${{ matrix.os == 'ubuntu-latest' }}
+        shell: bash
+        run: sudo apt install -y mesa-common-dev
+
       - name: Pulling ${{ github.event.inputs.repository }}
         shell: pwsh
         run: ./vcpkg.ps1 -Repository ${{ github.event.inputs.repository }} -Branch ${{ github.event.inputs.branch }}
