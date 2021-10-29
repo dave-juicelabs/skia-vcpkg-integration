@@ -6,11 +6,11 @@ on:
       repository:
         description: The vcpkg repository to pull
         required: true
-        default: https://github.com/microsoft/vcpkg.git
+        default: https://github.com/Juice-Labs/vcpkg.git
       branch:
         description: The vcpkg repository branch to pull
         required: true
-        default: master
+        default: skia-update-internal
 jobs:
   build:
     strategy:
@@ -35,22 +35,29 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: Installing mesa-common-dev
+      - name: Installing dependencies
         if: ${{ matrix.os == 'ubuntu-latest' }}
         shell: bash
-        run: sudo apt install -y mesa-common-dev
+        run: sudo apt install -y mesa-common-dev libx11-xcb-dev
 
       - name: Pulling ${{ github.event.inputs.repository }}
         shell: pwsh
         run: ./vcpkg.ps1 -Repository ${{ github.event.inputs.repository }} -Branch ${{ github.event.inputs.branch }}
 
+      - name: Cache binary packages
+        uses: actions/cache@v2
+        with:
+          path: ./vcpkg/archives
+          key: ${{ matrix.os }}-vcpkg-archives-${{ matrix.features }}
+
       - name: Installing skia[${{ matrix.features }}]
         shell: bash
-        run: ./vcpkg/vcpkg install skia[${{ matrix.features }}] --triplet ${{ matrix.triplet }}
+        run: |
+          ./vcpkg/vcpkg install skia[${{ matrix.features }}] --triplet ${{ matrix.triplet }}
 
       - name: Archiving logs
         if: ${{ failure() }}
         uses: actions/upload-artifact@v2
         with:
           name: logs-${{ matrix.os }}-${{ matrix.features }}
-          path: vcpkg/buildtrees/skia/*.log
+          path: ./vcpkg/buildtrees/skia/*.log
