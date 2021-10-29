@@ -6,11 +6,11 @@ on:
       repository:
         description: The vcpkg repository to pull
         required: true
-        default: https://github.com/Juice-Labs/vcpkg.git
+        default: https://github.com/microsoft/vcpkg.git
       branch:
         description: The vcpkg repository branch to pull
         required: true
-        default: skia-update-internal
+        default: master
 jobs:
   build:
     strategy:
